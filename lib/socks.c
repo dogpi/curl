@@ -235,7 +235,6 @@ CURLcode Curl_SOCKS4(const char *proxy_user,
       conn->async.dns = dns;
       conn->async.done = TRUE;
 #endif
-      result = CURLE_OK;
       infof(data, "Hostname '%s' was found\n", hostname);
       sxstate(conn, CONNECT_RESOLVED);
     }
@@ -738,7 +737,6 @@ CURLcode Curl_SOCKS5(const char *proxy_user,
       conn->async.dns = dns;
       conn->async.done = TRUE;
 #endif
-      result = CURLE_OK;
       infof(data, "SOCKS5: hostname '%s' found\n", hostname);
     }
 
@@ -751,7 +749,8 @@ CURLcode Curl_SOCKS5(const char *proxy_user,
   CONNECT_RESOLVED:
   case CONNECT_RESOLVED: {
     Curl_addrinfo *hp = NULL;
-    hp = dns->addr;
+    if(dns)
+      hp = dns->addr;
     if(!hp) {
       failf(data, "Failed to resolve \"%s\" for SOCKS5 connect.",
             hostname);
