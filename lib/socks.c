@@ -43,12 +43,12 @@
 #include "curl_memory.h"
 #include "memdebug.h"
 
+#if defined(HAVE_GSSAPI) || defined(USE_WINDOWS_SSPI)
 /*
  * Helper read-from-socket functions. Does the same as Curl_read() but it
  * blocks until all bytes amount of buffersize will be read. No more, no less.
  *
- * This is STUPID BLOCKING behaviour which we frown upon, but right now this
- * is what we have...
+ * This is STUPID BLOCKING behavior. Only used by the SOCKS GSSAPI functions.
  */
 int Curl_blockread_all(struct connectdata *conn, /* connection data */
                        curl_socket_t sockfd,     /* read from this socket */
@@ -94,6 +94,7 @@ int Curl_blockread_all(struct connectdata *conn, /* connection data */
   }
   return result;
 }
+#endif
 
 #ifndef DEBUGBUILD
 #define sxstate(x,y) socksstate(x,y)
